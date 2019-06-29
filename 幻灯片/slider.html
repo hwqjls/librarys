@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>幻灯片案例</title>
+  <link rel="stylesheet" href="css/slider.css">
+</head>
+
+<body>
+  <div class="slider-wrap">
+    <div class="slider">
+      <ul class="slider-list" id="slider_list">
+      </ul>
+    </div>
+    <div class="thumb">
+      <ul class="thumb-list" id="thumb_list"></ul>
+    </div>
+  </div>
+
+  <script type="text/html" id="slider_item">
+    <li class="slider-item">
+      <a href="#">
+        <img src="img/" alt="" />
+      </a>
+    </li>
+  </script>
+  <script type="text/html" id="thumb_item">
+    <li class="thumb-item">
+      <a href="javascript:;">
+        <img src="img/" alt="" />
+      </a>
+    </li>
+  </script>
+  <script type="text/javascript" src="js/slider.js"></script>
+  <script type="text/javascript">
+    ; (function (doc) {
+      var sliderItem = doc.getElementById('slider_item').innerHTML,
+        thumbItem = doc.getElementById('thumb_item').innerHTML,
+        sliderList = doc.getElementById('slider_list'),
+        thumbList = doc.getElementById('thumb_list');
+
+      var init = function () {
+        renderList(6)
+      }
+
+      function renderList(num) {
+        var sList = '',
+          tList = '';
+
+        for (var i = 0; i < num; i++) {
+          if (i === 0) {
+            sliderItem = sliderItem.replace(/slider-item/, 'slider-item active');
+            thumbItem = thumbItem.replace(/thumb-item/, 'thumb-item cur');
+          } else {
+            sliderItem = sliderItem.replace(/slider-item active/, 'slider-item');
+            thumbItem = thumbItem.replace(/thumb-item cur/, 'thumb-item');
+          }
+          sList += sliderItem.replace(/img\//, "img\/" + (i + 1) + ".jpg");
+          tList += thumbItem.replace(/img\//, "img\/" + (i + 1) + ".jpg");
+        }
+
+        sliderList.innerHTML = sList;
+        thumbList.innerHTML = tList;
+      }
+      init();
+    })(document);
+
+    var slider = new Slider({
+      sliderItem: 'slider-item',
+      thumbItem: 'thumb-item'
+    })
+  </script>
+</body>
+
+</html>
