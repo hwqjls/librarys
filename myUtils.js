@@ -79,7 +79,7 @@ var myViewUtils = (function () {
    *scrollHeight = window.innerHeight + window.pageYOffset
    */
   function getScrollSize() {
-    if (document.body.scrollWidth) {
+    if (document.body.scrollHeight) {
       return {
         width: document.body.scrollWidth,
         height: document.body.scrollHeight
@@ -97,6 +97,62 @@ var myViewUtils = (function () {
     getScrollOffset: getScrollOffset,
     getViewportSize: getViewportSize,
     getScrollSize: getScrollSize
+  }
+})();
+
+//坐标系工具
+var myPosUtils = (function () {
+
+  /* 
+  *@desc 计算当前文档的坐标(包含滚动条的距离)
+  *@param {Object} e 点击事件对象
+  *@return {Number, Number} X Y x轴坐标和y轴坐标
+  */
+  function pagePos(e) {
+    var sLeft = myViewUtils.getScrollOffset().left,
+      sTop = myViewUtils.getScrollOffset().top,
+      cLeft = document.documentElement.clientLeft || 0;
+      cTop = document.documentElement.clientTop || 0;
+
+    return {
+      X: e.clientX + sLeft - cLeft,
+      Y: e.clientY + sTop - cTop
+    }
+  }
+
+  /* 
+  *@desc 指定元素及其内容拖拽
+  *@param {Object} elem 指定要拖拽的元素
+  */
+  function elemDrag(elem) {
+    var x,
+      y;
+    myEventUtils.addEvent(elem, 'mousedown', function (e) {
+      var e = e || window.event;
+
+      x = pagePos(e).X - parseInt(myStyleUtils.getStyles(box, 'left'), 10);
+      y = pagePos(e).Y - parseInt(myStyleUtils.getStyles(box, 'top'), 10);
+
+      myEventUtils.addEvent(document, 'mousemove', mouseMove);
+      myEventUtils.addEvent(document, 'mouseup', mouseUp);
+    });
+
+    function mouseMove(e) {
+      var e = e || window.event;
+      elem.style.top = pagePos(e).Y - y + 'px';
+      elem.style.left = pagePos(e).X - x + 'px';
+    }
+
+    function mouseUp(e) {
+      var e = e || window.event;
+      myEventUtils.removeEvent(document, 'mousemove', mouseMove);
+      myEventUtils.removeEvent(document, 'mouseup', mouseUp);
+    }
+  }
+
+  return {
+    pagePos: pagePos,
+    elemDrag: elemDrag
   }
 })();
 
@@ -273,9 +329,114 @@ var myElemNodeUtils = (function () {
     }
   }
 
+  /* 
+  *@desc 查找节点下的所有子元素
+  *@param {Object} node
+  *@return {Object}
+  */
+  function elemChild(node) {
+    var temp = {
+      'length': 0,
+      'splice': Array.prototype.splice
+    },
+      len = node.childNodes.length;
+
+    for (var i = 0; i < len; i++) {
+      var childItem = node.childNodes[i];
+
+      if (childItem.nodeType === 1) {
+        temp[temp.length] = childItem;
+        temp['length']++
+      }
+    }
+    return temp;
+  }
+
+  /* 
+   *@desc 找出一个节点的第N层父级节点,
+   *      如果n未填写,直接返回上级父节点,
+   *      如果n<=0或非数则返回undefined
+   *@param {Object} node
+   *@param {Number} n
+   *@return {Object}
+   */
+  function elemParent(node, n) {
+    var type = typeof (n);
+
+    if (type === 'undefined') {
+      return node.parentNode;
+    } else if (n <= 0 || type !== 'number') {
+      return undefined;
+    }
+
+    while (n) {
+      node = node.parentNode;
+      n--;
+    }
+
+    return node;
+  }
   return {
     getFullChildren: getFullChildren,
-    elemReverse: elemReverse
+    elemReverse: elemReverse,
+    elemChild: elemChild,
+    elemParent: elemParent
+  }
+})();
+
+//事件工具
+var myEventUtils = (function () {
+  /* 
+   *@desc 为函数添加事件
+   *@param {object} el 事件源
+   *@param {String} type 事件类型
+   *@param {object} fn 事件函数
+  */
+  function addEvent(el, type, fn) {
+    if (el.addEventListener) {
+      el.addEventListener(type, fn, false);
+    } else if (el.attachEvent) {
+      el.attachEvent('on' + type, function () {
+        fn.call(el);
+      });
+    } else {
+      el['on' + type] = fn;
+    }
+  }
+
+  /* 
+   *@desc 为函数移除事件
+   *@param {object} el 事件源
+   *@param {String} type 事件类型
+   *@param {object} fn 事件函数
+  */
+  function removeEvent(el, type, fn) {
+    if (el.addEventListener) {
+      el.removeEventListener(type, fn, false);
+    } else if (el.attachEvent) {
+      el.detachEvent('on' + type, fn);
+    } else {
+      el['on' + type] = fn;
+    }
+  }
+
+  /* 
+   *@desc 取消冒泡
+  */
+  function cancelBubble(e) {
+    var e = e || window.event;
+
+    if (e.stopPropagation) {
+      e.stopPropagation
+    } else {
+      e.cancelBubble = true;
+    }
+  }
+
+  return {
+    addEvent: addEvent,
+    removeEvent: removeEvent,
+    cancelBubble: cancelBubble
   }
 })();
 
