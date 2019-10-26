@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>myPush</title>
+</head>
+<body>
+  仿数组原型上的push（）方法
+
+  <script>
+    var arr = [1, 2, 3];
+
+
+    Array.prototype.myPush = function () {
+      let argLen = arguments.length;
+
+      if (argLen === 0) {
+        return this.length;
+      }
+
+      for(let i = 0; i < argLen; i++) {
+        const element = arguments[i];
+        this[this.length] = element;
+      }
+
+      return this.length;
+    }
+  </script>
+</body>
+</html>

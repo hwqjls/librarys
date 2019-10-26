@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Function.bind()</title>
+</head>
+<body>
+  仿ECMAScript5中Function.bind()函数
+  <script>
+    Function.prototype.myBind = function (obj) {
+      var self = this,
+      return function () {
+        var args = [],
+            i;
+        for(i = 1; i < arguments.length; i++) {
+          return self.apply(obj.args);
+        }
+      }
+    }
+  </script>
+</body>
+</html>

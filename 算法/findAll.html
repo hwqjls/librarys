@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+    在数组中查找所有出现的元素方法
+    <script>
+      function findAll (ary, elem) {
+        var results = [],
+            len = ary.length,
+            pos = 0;
+
+        while (pos < len) {
+          pos = ary.indexOf(elem, pos);
+          if (pos === -1) break;
+          results.push(pos);
+          pos++;
+        }
+        return results;
+      }
+    </script>
+</body>
+</html>

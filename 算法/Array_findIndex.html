@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Array.findIndex()</title>
+</head>
+<body>
+    仿ECMAScript5中Array.findIndex()函数
+    <script>
+      Array.prototype.myfindIndex = function (fn, obj) {
+        let res = undefined;
+        for(let i = 0; i < this.length; i++) {
+          const elem = this[i];
+          if (obj == undefined) {
+            let cur = fn(elem, i, this);
+            if (cur) {
+              res = i;
+              break;
+            }
+          } else {
+            let cur = fn.call(obj, elem, i, this);
+            if (cur) {
+              res = i;
+              break;
+            }
+          }
+        }
+        return res;
+      }
+    </script>
+</body>
+</html>

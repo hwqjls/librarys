@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Array.map()</title>
+</head>
+<body>
+    仿ECMAScript5中Array.map()函数
+    <script>
+      Array.prototype.mymap = function (fn, obj) {
+        let res = [];
+        for(let i = 0; i < this.length; i++) {
+          const element = this[i];
+          if (obj == undefined) {
+            res[i] = fn(element, i, this);
+          } else {                                                                                                                                                                                                                                                                                                                         
+            res[i] = fn.call(obj, element, i, this);
+          }
+        }
+        return res;
+      }
+    </script>
+</body>
+</html>

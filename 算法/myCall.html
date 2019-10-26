@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>myCall</title>
+</head>
+<body>
+  仿函数原型上的call()方法
+
+  <script>
+    Function.prototype.myCall = function myCall () {
+      var arr = [...arguments].slice(1);
+      if (arguments[0] == undefined) {
+        this(...arr);
+      } else {
+        var obj = Object(arguments[0]);
+        obj.__proto__.fn = this;
+        obj.fn(...arr);
+        delete obj.__proto__.fn;
+      }
+      return this;
+    }
+  </script>
+</body>
+</html>

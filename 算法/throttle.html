@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>throttle</title>
+</head>
+<body>
+  函数节流
+  <script>
+    function throttle (fn, delay = 60) {
+      let lock = false;
+      return (...args) => {
+        if (lock) {
+          return;
+        }
+
+        fn(...args);
+        lock = true;
+        setTimeout(() => {
+          lock = false;
+        }, delay);
+      }
+    }
+
+    //升级版
+    function throttleTop (fn, delay) {
+      var t = null,
+          begin = new Date().getTime();
+
+      return function () {
+        var _self = this,
+            args = arguments,
+            cur = new Date().getDateTime();
+
+        clearTimeout(t);
+
+        if (cur - begin >= delay) {
+          fn.applay(_self, args);
+          begin = cur;
+        } else {
+          t = setTimeout(function () {
+            fn.applay(_self, args);
+          }, delay);
+        }
+      }
+    }
+  </script>
+</body>
+</html>

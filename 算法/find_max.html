@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>find_max</title>
+</head>
+<body>
+  寻找最大值
+  <script>
+    var arr = [1 , 8 , -1, 5, 200, 100];
+
+    console.log(find_max(arr));
+
+
+    function find_max (arr) {
+      let max = Number.NEGATIVE_INFINITY,
+          len = arr.length;
+      for (let i = 0; i < len; i++) {
+        max = (arr[i] > max ? arr[i] : max);
+      }
+
+      return max;
+    }
+
+    //不定实参函数
+    function max() {
+            var max = Number.NEGATIVE_INFINITY;
+            for (var i = 0; i < arguments.length; i++) {
+                if (arguments[i] > max) max = arguments[i];
+            }
+            return max;
+        }
+  </script>
+</body>
+</html>

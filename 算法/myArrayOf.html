@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Array.of()</title>
+</head>
+<body>
+  仿ES6中的Array.of()方法
+  <script>
+    var myArray = {of: function of () {
+      const len = arguments.length;
+      if(len === 0) {
+        return [];
+      }
+      
+      var arr = [];
+
+      for(let i = 0; i < len; i++) {
+        const element = arguments[i];
+        arr.push(element);
+      }
+
+      return arr;
+    }}
+  </script>
+</body>
+</html>

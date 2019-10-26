@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Object.keys()</title>
+</head>
+<body>
+  仿ECMAScript5中Object.keys()函数
+  <script>
+    var obj = {
+      name: 'hwq',
+      age: 18
+    }
+
+    function keys(obj) {
+      if (typeof obj !== "object") {
+          throw TypeError();
+      }
+      var result = [];
+      for (var prop in obj) {
+          if (obj.hasOwnProperty(prop)) {
+              result.push(prop);
+          }
+      }
+      return result;
+    }
+  </script>
+</body>
+</html>

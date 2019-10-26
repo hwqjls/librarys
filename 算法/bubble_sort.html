@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>bubble_sort</title>
+</head>
+<body>
+  冒泡排序
+  <script>
+    var arr = [1 , 8 , -1, 5, 200, 100];
+
+    console.log(bubble_sort(arr));
+
+    function bubble_sort (arr) {
+      var len = arr.length;
+
+      for(var i = len; i > 0; i--) {
+        for(var j = 1; j < i; j++) {
+          if (arr[j] < arr[j - 1]) {
+            swap(arr, j, j - 1);
+          }
+        }
+      }
+
+      return arr;
+    }
+
+    function swap(arr, i, j) {
+      var temp = arr[i];
+          arr[i] = arr[j];
+          arr[j] = temp;
+
+    }
+  </script>
+</body>
+</html>

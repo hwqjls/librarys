@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Insertion Sort</title>
+</head>
+<body>
+  插入排序
+  <script>
+    var arr = [1,7,3,4,2,5,6];
+
+    console.time();
+    console.log(sort(arr));
+    console.timeEnd();
+
+    function sort (a) {
+      
+      for(var i = 1; i < a.length; i++) {
+        for(var j = i; j > 0; j--) {
+          if (arr[j-1] > arr[j]) {
+            swap(arr, j - 1, j);
+          } else {
+            break;
+          }
+        }
+      }
+
+      function swap (arr, i, j) {
+        var temp = arr[i];
+          arr[i] = arr[j];
+          arr[j] = temp;
+      }
+
+      return arr;
+    }
+
+    console.time();
+    console.log(insertionSort(arr));
+    console.timeEnd();
+
+    function insertionSort(array) {
+      var length = array.length,
+        i,
+        j,
+        temp;
+      for (i = 1; i < length; i++) {
+        temp = array[i];
+        for (j = i; j >= 0; j--) {
+          if (array[j - 1] > temp) {
+            array[j] = array[j - 1];
+          } else {
+            array[j] = temp;
+            break;
+          }
+        }
+      }
+      return array;
+    }
+
+
+    //二分查找插入排序
+    function insertionSort2 (arr) {
+
+      function binarySearch (arr, start, end, temp) {
+        var middle;
+        while (start <= end) {
+          middle = Math.floor((start + end) / 2);
+          if (arr[middle] < temp) {
+            if (temp <= arr[middle + 1]) {
+              return middle + 1;
+            } else {
+              start = middle + 1;
+            }
+          } else {
+            if (end === 0) {
+              return 0;
+            } else {
+              end = middle;
+            }
+          }
+        }
+      }
+
+      function binarySort (arr) {
+        var length = arr.length,
+            i,
+            j,
+            k,
+            temp;
+
+        for (i = 1; i < length; i++) {
+          temp = arr[i];
+
+          if (arr[i - 1] <= temp) {
+            k = i;
+          } else {
+            k = binarySearch(arr, 0, i - 1, temp);
+            for (j = i; j > k; j--) {
+              arr[j] = arr[j - 1];
+            }
+          }
+
+          arr[k] = temp;
+        }
+        return arr;
+      }
+
+      return binarySort(arr);
+    }
+
+    console.time();
+    console.log(insertionSort2(arr));
+    console.timeEnd();
+  </script>
+</body>
+</html>

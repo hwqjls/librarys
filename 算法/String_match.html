@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>String.match()</title>
+</head>
+<body>
+  仿String.match()方法实现
+  <script>
+    String.prototype.myMatch = function (reg) {
+      var arr = [];
+      var res = reg.exec(this);
+      while(res) {
+        arr.push(res[0]);
+        res = reg.exec(this);
+      }
+
+      return arr;
+    }
+  </script>
+</body>
+</html>
