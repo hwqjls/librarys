@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>纯函数：</title>
+</head>
+<body>
+  <div>
+    JS编程特点
+      函数式编程和面向对象的编程语言
+
+      可扩展性强
+
+      优点：编程灵活、易学
+      缺点：不可控
+
+      面向对象与函数式编程关系
+
+      复杂的this call apply bind
+
+    函数式编程
+      纯函数：
+        优点：易读 易维护
+        概念：函数是第一类对象，不依赖任何其他对象独立存在
+        副作用：只要跟函数外部环境发生了交互就是副作用
+          例如：发送数据请求  改变数据  console.log DOM操作 数据存储
+        可移植，可测试
+        竞争态
+        可缓存性
+  </div>
+
+  <script>
+    //可缓存性例子
+
+    function test(fn) {
+      var cache = {};
+
+      return function () {
+        var args = JSON.stringify(arguments);
+
+        cache[args] = cache[args] ? cache[args] + '(来自缓存池)'
+                                  : fn.apply(fn, arguments);
+        return cache[args];
+      }
+    }
+
+    var add = test(function() {
+      var argLen = arguments.length,
+          item,
+          res = 0;
+
+      for(var i = 0; i < argLen; i++) {
+        item = arguments[i];
+        res += item;
+      }
+
+      return res;
+    });
+    
+    console.log(add(1, 2));
+    console.log(add(1, 2));
+    console.log(add(1, 3));
+    console.log(add(1, 3));
+  </script>
+</body>
+</html>

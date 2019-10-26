@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>函数记忆与函数防抖</title>
+</head>
+<body>
+  <script>
+    //函数记忆 -> 函数优化 -> 缓存函数 memorize
+    //阶乘
+
+    // function factorial (n) {
+    //   if (n === 0 || n === 1) {
+    //     return 1;
+    //   }
+
+    //   return n * factorial( n - 1 );
+    // }
+
+
+    // var times = 0,
+    //     cache = [];
+
+    // function factorial (n) {
+    //   times ++;
+
+    //   if (cache[n]) {
+    //     return cache[n];
+    //   }
+
+    //   if (n === 0 || n === 1) {
+    //     cache[0] = 1;
+    //     cache[1] = 1;
+    //     return 1;
+    //   }
+
+    //   return cache[n] = n * factorial( n - 1 );
+    // }
+
+    // console.time('first');
+    // console.log(factorial(100));
+    // console.timeEnd('first');
+
+    // console.time('second');
+    // console.log(factorial(100));
+    // console.timeEnd('second');
+
+
+    function factorial (n) {
+      if (n === 0 || n === 1) {
+        return 1;
+      }
+      
+      return n * factorial(n - 1);
+    }
+
+    function fab (n) {
+      return n <= 2 ? 1 : fab(n-1) + fab(n-2);
+    }
+
+    function memorize (fn) {
+      var cache = {};
+
+      return function () {
+        var k = [].join.call(arguments, ',');
+
+        return cache[k] = cache[k] || fn.apply(this, arguments);
+      }
+    }
+    
+    var f1 = memorize(factorial);
+    var f2 = memorize(fab);
+
+    console.log(f1(6));
+    console.log(f2(10));
+  </script>
+</body>
+</html>

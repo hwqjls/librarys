@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>函数柯里化</title>
+</head>
+<body>
+  <script src="jquery.js"></script>
+  <script>
+    //高阶函数
+    function test (a, b, fn) {
+      return pow(a, 2) + pow(b, 3);
+    }
+
+    function pow (x, n) {
+      return Math.pow(x, n);
+    }
+
+
+    
+    console.log(test(2, 3));
+
+    //js函数实际上都是指向某一个变量
+    var test = function () {}
+    function test () {}
+
+    // test -> 一个函数
+    // 函数参数 -> 接收变量
+    // 函数的参数能接收变量
+    // 一个函数就可以接收另一个函数作为变量
+
+    // 一个函数接收另一个函数作为参数变量的这个函数就是高阶函数
+    var arr= [1, 2, 3, 4, 5];
+
+    //map() -> 数据处理函数 -> 高阶函数
+
+    //reduce() -> 归纳函数 
+
+    // 抽象 -> 抽象成完全独立的函数体或相互依赖的程序体
+
+    // 数组的扩展方法
+    // 计时器
+    // sort
+    // replace
+
+  </script>
+  <script>
+  //柯里化 函数式编程思想
+  //在计算机科学中，柯理化把接受多个参数的函数编程接受一个单一的参数（最初函数的第一个参数）的函数,
+  //并且返回接收余下的参数，并且返回结果的新函数的技术
+
+  //1.简化代码
+  //2.提高维护性
+  //3.功能单一化
+
+  //功能内聚
+  //降低耦合
+  //降低代码的重复性
+  //提高代码的适应性
+
+  //Haskell Brooks Curry
+
+  function add (a, b, c, d) {
+    return a + b + c + d;
+  }
+
+  //返回一层的柯理化
+  function curry (fn) {
+    var _arg = [].slice.call(arguments, 1);
+    return function () {
+      var newArgs = _arg.concat([].slice.call(arguments));
+      return fn.apply(this, newArgs);
+    }
+  }
+
+  var add2 = curry(add, 1, 2);
+  var res = add2(3, 4);
+  console.log(res);
+
+
+  //封装柯里化，一般用于参数个数未知的情况下
+  //使用了递归
+  function curry (fn, len) {
+    var len = len || fn.length;
+
+    var func = function (fn) {
+      var _arg = [].slice.call(arguments, 1);
+      return function () {
+        var newArgs = _arg.concat([].slice.call(arguments));
+        return fn.apply(this, newArgs);
+      }
+    }
+
+    return function () {
+      var argLen = arguments.length;
+
+      if (argLen < len) {
+        var formatedArr = [fn].concat([].slice.call(arguments));
+        return curry(func.apply(this, formatedArr), len - argLen);
+      } else {
+        return fn.apply(this, arguments);
+      }
+    }
+  }
+
+  function add (a, b, c, d) {
+    return a + b + c + d;
+  }
+  var add2 = curry(add)(1)(2)(3)(4);
+  console.log(add2);
+
+  </script>
+</body>
+</html>

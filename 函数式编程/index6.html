@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>函数防抖与节流函数</title>
+</head>
+<body>
+  <script>
+    //1.对于在时间被触发n秒后再执行的回调 -> 延迟执行
+    //2.如果在这n秒内再触发时间，重新开始计时
+
+    //函数防抖： n秒内只要你触发事件，就重新计时，
+    //          事件处理函数的程序将永远不能被执行
+    //一般用在ajax, input里面
+
+    function debounce(fn, time, triggleNow) {
+      var t = null,
+          res;
+
+      var debounced = function () {
+        var _self = this,
+            args = arguments;
+
+        if (t) {
+          clearTimeout(t);
+        }
+
+        if (triggleNow) {
+          var exec = !t;
+
+          t = setTimeout(function () {
+            t = null
+          }, time);
+
+          if (exec) {
+            res = fn.apply(_self, args);
+          }
+        } else {
+          t = setTimeout(function () {
+            res = fn.apply(_self, args);
+          }, time);
+        }
+
+        return res;
+      }
+
+      debounced.remove = function () {
+        clearTimeout(t);
+        t = null;
+      }
+    }
+  
+  
+  </script>
+
+  <script>
+    //函数节流：事件被触发、n秒之内只执行一次事件处理函数
+
+    function throttle (fn, delay) {
+      var t = null,
+          begin = new Date().getTime();
+
+      return function () {
+        var _self = this,
+            args = arguments,
+            cur = new Date().getTime();
+
+        clearTimeout(t);
+
+        if (cur - begin >= delay) {
+          fn.apply(_self, args);
+          begin = cur;
+        } else {
+          t = setTimeout(function () {
+            fn.apply(_self, args);
+          }, delay);
+        }
+      }
+    }
+  </script>
+</body>
+</html>

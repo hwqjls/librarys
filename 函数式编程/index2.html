@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>函数组合</title>
+</head>
+<body>
+  //函数组合 -> 饲养函数 -> compose
+  //若干个纯函数、偏函数、柯理化函数组合成一个新的函数、形成数据传递、并实现一种有序执行的效果
+
+  <div id="js-course-data" style="display: none">
+    [{"id": "1","course":"前端开发之企业级深度JavaScript特训课【JS++前端】","classes":"19","teacher":"小野","img":"ecmascript.jpg","is_free":"1","datetime":"1540454477","price":"0"},
+    {"id": "2","course":"WEB前端工程师就业班之深度JS DOM+讲师辅导-第3期【JS++前端】","classes":"22","teacher":"小野","img":"dom.jpg","is_free":"0","datetime":"1540454477","price":"699"},
+    {"id": "3","course":"前端开发之企业级深度HTML特训课【JS++前端】","classes":"3","teacher":"小野","img":"html.jpg","is_free":"1","datetime":"1540454477","price":"0"},
+    {"id": "4","course":"前端开发之企业级深度CSS特训课【JS++前端】","classes":"5","teacher":"小野","img":"css.jpg","is_free":"1","datetime":"1540454477","price":"0"},
+    {"id": "5","course":"前端就业班VueJS+去哪儿网+源码课+讲师辅导-第3期【JS++前端】","classes":"50","teacher":"哈默","img":"vuejs.jpg","is_free":"0","datetime":"1540454477","price":"1280"},
+    {"id": "6","course":"前端就业班ReactJS+新闻头条实战+讲师辅导-第3期【JS++前端】","classes":"21","teacher":"托尼","img":"reactjs.jpg","is_free":"0","datetime":"1540454477","price":"2180"},
+    {"id": "7","course":"WEB前端开发工程师就业班-直播/录播+就业辅导-第3期【JS++前端】","classes":"700","teacher":"JS++名师团","img":"jiuyeban.jpg","is_free":"0","datetime":"1540454477","price":"4980"}]      
+  </div>
+  <script>
+    var data = JSON.parse(document.getElementById('js-course-data').innerHTML);
+
+    function toUpperCase (str) {
+      return str.toUpperCase();
+    }
+
+    function exclaim (str) {
+      return str + '!';
+    }
+
+    function join (str) {
+      return  str.join('');
+    }
+
+    function reverse (str) {
+      return str.reverse();
+    }
+
+    function split (str) {
+      return str.split('');
+    }
+
+    function compose (f, g) {
+      return function (x) {
+        return f(g(x)); //左倾
+      }
+    }
+
+    var f = compose(exclaim, toUpperCase);
+    console.log(f('hello'));
+
+    //x 是通过 f, g之间的“管道”传输值
+
+    function compose1 () {
+      var args = Array.prototype.slice.call(arguments),
+          len = args.length - 1;
+
+      return function (x) {
+        var res = args[len](x);
+
+        while (len--) {
+          res = args[len](res);
+        }
+
+        return res;
+      }
+    }
+    var f1 = compose1(exclaim, join, reverse, split, toUpperCase);
+    console.log(f1('hello'));
+
+
+    function compose2 () {
+      var args = Array.prototype.slice.call(arguments);
+
+      return function (x) {
+        return args.reduceRight(function (prev, cb) {
+          return cb(prev);
+        }, x);
+      };
+    }
+
+    console.log();
+
+
+    //结合律  Associativity
+    console.log(compose2(exclaim, compose2( join, reverse, split), toUpperCase)('hello'));
+
+    //pointfree
+    //Love means never having to say you're sorry.
+    //Excuse me.
+    //
+    //Pointfree style means never having to say your data.
+  </script>
+
+  <script>
+    //案例：
+    function classesFilter (data) {
+      return data.classes > 20 && data;
+    }
+
+    function freeFilter (data) {
+      return data.is_free === '0' && data;
+    }
+
+    var arr = [],
+        f = null;
+
+    data.forEach(function (val) {
+      f = compose2(freeFilter, classesFilter);
+      f(val) && arr.push(f(val))
+    });
+    console.log(arr);
+  </script>
+</body>
+</html>

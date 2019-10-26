@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>归类技术</title>
+</head>
+<body>
+  <script>
+    //数据归类技术
+
+    function sortDatas(sort, data) {
+      var cache = {};
+
+      return function (foreign_key, sortType) {
+        if (sortType !== 'single' && sortType !== 'multi') {
+          console.log(new Error('Invalid sort type.[Only "single" and "multi" are valid values'));
+          return;
+        }
+
+        sort.forEach(function (sort) {
+          var _id = sort.id;
+          cache[_id] = [];
+
+          data.forEach(function (elem) {
+            var foreign_val = elem[foreign_key];
+            switch(sortType) {
+              case 'single':
+                if (foreign_val == _id) {
+                  cache[_id].push(elem);
+                };
+                break;
+              case 'multi':
+                var _arr = foreign_val.split(',');
+                _arr.forEach(function (val) {
+                  if (val == _id) {
+                    cache[_id].push(elem);
+                  }
+                });
+                break;
+                default:
+                  break;
+            }
+          });
+        });
+      };
+    }
+  </script>
+</body>
+</html>
