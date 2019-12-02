@@ -37,11 +37,11 @@
         clearTimeout(t);
 
         if (cur - begin >= delay) {
-          fn.applay(_self, args);
+          fn.apply(_self, args);
           begin = cur;
         } else {
           t = setTimeout(function () {
-            fn.applay(_self, args);
+            fn.apply(_self, args);
           }, delay);
         }
       }
